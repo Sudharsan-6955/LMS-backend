@@ -55,16 +55,25 @@ app.use('/uploads/resumes', express.static(path.join(__dirname, 'uploads/resumes
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('✅ MongoDB Atlas connected');
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
-})
-.catch((err) => {
-  console.error('❌ MongoDB connection error:', err.message);
-});
+
+// Add a timeout to prevent hanging
+const connectWithTimeout = async () => {
+  try {
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('MongoDB connection timed out')), 20000));
+    await Promise.race([
+      mongoose.connect(MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+      timeoutPromise
+    ]);
+    console.log('✅ MongoDB Atlas connected');
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    process.exit(1);
+  }
+};
+connectWithTimeout();
