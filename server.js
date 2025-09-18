@@ -20,12 +20,17 @@ app.use(cors({
   credentials: true
 }));
 
+
+// Root route for Railway health check and browser visits
+app.get('/', (req, res) => {
+  res.send('LMS Backend is running!');
+});
+
 // ✅ Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/categories', categoryRoutes); // ✅ Good
-
 
 const commentRoutes = require('./routes/commentRoutes');
 const authorRoutes = require('./routes/authorRoutes');
