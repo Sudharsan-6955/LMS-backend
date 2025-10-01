@@ -16,7 +16,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // ✅ Middlewares
 app.use(cors({
-  origin: 'https://lms-frontend-im5s.vercel.app',
+  origin: true,
   credentials: true
 }));
 

@@ -3,10 +3,13 @@ const Comment = require('../models/Comment');
 // Get all comments for a course
 exports.getComments = async (req, res) => {
   try {
+    console.log('Fetching comments for courseId:', req.params.id); // Add this line
     const comments = await Comment.find({ courseId: req.params.id }).sort({ date: -1 });
+    console.log('Comments found:', comments); // Add this line
     res.json(comments);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching comments' });
+    console.error('Error fetching comments:', err); // Add this line for detailed error logging
+    res.status(500).json({ message: 'Error fetching comments', error: err.message });
   }
 };
 
@@ -28,6 +31,7 @@ exports.addComment = async (req, res) => {
     await comment.save();
     res.status(201).json(comment);
   } catch (err) {
-    res.status(500).json({ message: 'Error adding comment' });
+    console.error('Error adding comment:', err); // Add this line for detailed error logging
+    res.status(500).json({ message: 'Error adding comment', error: err.message });
   }
 };

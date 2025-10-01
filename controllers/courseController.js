@@ -74,8 +74,18 @@ const createCourse = async (req, res) => {
             language
         } = req.body;
 
+        // Log the incoming body for debugging
         if (!title || price == null || !imgUrl || !author) {
-            return res.status(400).json({ message: 'Missing required fields' });
+            console.error('❌ Missing required fields:', { title, price, imgUrl, author });
+            return res.status(400).json({
+                message: 'Missing required fields',
+                missing: {
+                    title: !title,
+                    price: price == null,
+                    imgUrl: !imgUrl,
+                    author: !author
+                }
+            });
         }
 
         // Increment category count (case-insensitive)

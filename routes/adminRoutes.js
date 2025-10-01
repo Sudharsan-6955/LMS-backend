@@ -39,8 +39,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Add isAdmin: true to the token payload
     const token = jwt.sign(
-      { adminId: admin._id, email: admin.email },
+      { adminId: admin._id, email: admin.email, isAdmin: true },
       process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );

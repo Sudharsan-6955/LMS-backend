@@ -35,3 +35,14 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
+// models/Course.js
+const mongoose = require('mongoose');
+
+const courseSchema = new mongoose.Schema({
+  title: String,
+  category: String,
+  // ...other fields...
+});
+
+module.exports = mongoose.model('Course', courseSchema);
