@@ -25,6 +25,9 @@ app.use(cors({
 app.get('/', (req, res) => {
   res.send('LMS Backend is running!');
 });
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
 
 // ✅ Routes
 app.use('/api/auth', authRoutes);
